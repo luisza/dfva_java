@@ -4,13 +4,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.interfaces.RSAKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Random;
 
 import javax.crypto.BadPaddingException;
@@ -42,12 +48,13 @@ public class Crypto {
        return rsaPubKey;
     }
    
-//	private PrivateKey getPrivateKey() throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeySpecException{
-//		PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(this.settings.privateKey.getBytes("UTF-8"));
-//		KeyFactory kf = KeyFactory.getInstance("RSA");
-//		return kf.generatePrivate(spec);
-//	}
-//		
+	private RSAPrivateKey getPrivateKey() throws IOException{
+		PEMReader pemReader = new PEMReader(new StringReader(this.settings.privateKey));
+		RSAPrivateKey rsaPubKey = (RSAPrivateKey) pemReader.readObject();
+		pemReader.close();
+	    return rsaPubKey;
+	}
+		
 
 	private void encryptOAEP( byte[] data, OutputStream output) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException, IOException, IllegalBlockSizeException, BadPaddingException{
 		Cipher  rsa = Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding", "BC");//PKCS1-OAEP  , "BC"
@@ -55,6 +62,30 @@ public class Crypto {
 		byte[]  session =  rsa.doFinal(data);
 		output.write(session);
 	}
+	
+	private byte[] decryptOAEP(byte[] data) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException, IOException, IllegalBlockSizeException, BadPaddingException{
+		Cipher  rsa = Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding", "BC");//PKCS1-OAEP  , "BC"
+		rsa.init(Cipher.DECRYPT_MODE, this.getPrivateKey());		
+		byte[]  session =  rsa.doFinal(data);
+		return session;
+	}
+	
+	private byte[] decryptAES_EAX(byte[] key, byte[] nonce, byte[] data) throws DataLengthException, IllegalStateException, InvalidCipherTextException, IOException{
+		EAXBlockCipher eax = new EAXBlockCipher(new AESFastEngine());
+		
+		AEADParameters params = new AEADParameters(
+				new KeyParameter(key), 
+				eax.getBlockSize()*8, nonce, new byte[0]);
+		
+		eax.init(false, params);
+		
+		
+		byte[] ciphertext = new byte[eax.getOutputSize(data.length)];
+		int written = eax.processBytes(data, 0, data.length, ciphertext, 0);
+		written += eax.doFinal(ciphertext, written);
+		return ciphertext;
+	}
+	
 	
 	private byte[] generateIV() {
 		byte[] iv = new byte[16];
@@ -107,6 +138,40 @@ public class Crypto {
 			e.printStackTrace();
 		}
 		return dev;
+	}
+	
+	public String decrypt(String data){
+		try {
+			return this._decrypt(data);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "";	
+	}
+	
+	private String _decrypt(String data) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeySpecException, IllegalBlockSizeException, BadPaddingException, DataLengthException, IllegalStateException, InvalidCipherTextException {
+		byte[] decodedata = Base64.decodeBase64(data);
+		RSAPrivateKey privateKey = this.getPrivateKey();
+		int session_size = privateKey.getModulus().bitLength()/8;		
+		byte[] session = new byte[session_size];
+		byte [] nonce = new byte[16];
+		byte [] mac = new byte[16];
+		System.arraycopy(decodedata, 0, session, 0, session_size);
+		byte[] key = this.decryptOAEP(session);
+		byte[] edata = new byte[decodedata.length-session_size-16];
+		
+		System.arraycopy(decodedata, session_size, nonce, 0, 16);
+		System.arraycopy(decodedata, session_size+16, mac, 0, 16);
+		System.arraycopy(decodedata, session_size+32, edata, 0, edata.length-16);
+		System.arraycopy(mac, 0, edata, edata.length-16, 16);
+		
+		return new String(decryptAES_EAX(key, nonce,edata));
+		//System.out.println(size);
+		// get session
+		//
+		//return new byte[0];	
 	}
 
 	

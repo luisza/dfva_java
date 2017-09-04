@@ -87,21 +87,22 @@ public class App
     	
     	settings.institution = "e994a612-9277-4965-af32-3a0928fb09b8";
     	settings.notificationURL = "http://localhost:8000/receptor_notificacion";
-    	
+    	String code;
     	InstitutionClient client = new InstitutionClient(settings);
-    	/** authentication
+    	
+    	/** authentication  */
     	JSONObject authres = client.authenticate("04-0212-0119");
     	System.out.println(authres.toJSONString());
-    	 */
-    	/** Authentication show 
-    	String code = (String) authres.get("code");
+    	
+    	/** Authentication show */
+    	code = (String) authres.get("code");
     	JSONObject authresshow = client.authenticate_show("04-0212-0119", code);
     	System.out.println(authresshow.toJSONString());
-    	*/
-		/** Suscriptor connected 
+    	
+		/** Suscriptor connected */
 		Boolean sucres = client.suscriptor_connected("04-0212-0119");
     	System.out.println(sucres);
-    	*/
+    	
     	InputStream document;
 		try {
 			/**  DOCUMENT  */
@@ -117,24 +118,24 @@ public class App
 			System.out.println(signres.toJSONString());
 			
 			/** Sign Show */
-	    	String code = (String) signres.get("code");
+	    	code = (String) signres.get("code");
 	    	JSONObject signresshow = client.sign_show("04-0212-0119", code);
 	    	System.out.println(signresshow.toJSONString());
 			
 			
-			/** VALIDATE CERTIFICATE 
+			/** VALIDATE CERTIFICATE */
 			document = new ByteArrayInputStream(
 					"CERTIFICADO DE EJEMPLO".getBytes("UTF-8"));
 			JSONObject validateCertres = client.validate_certificate( document);
 			System.out.println(validateCertres.toJSONString());	
-			*/
 			
-			/** VALIDATE DOCUMENT 
+			
+			/** VALIDATE DOCUMENT */
 			document = new ByteArrayInputStream(
 					"DOCUMENTO DE EJEMPLO".getBytes("UTF-8"));
 			JSONObject validateDocres = client.validate_document(document);
 			System.out.println(validateDocres.toJSONString());	
-			*/
+			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

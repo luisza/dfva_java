@@ -133,6 +133,11 @@ public class BaseClient {
 	}
 	
 	protected JSONObject post(String url, String data){
+		return post(url, data, true);
+	}
+
+	
+	protected JSONObject post(String url, String data, Boolean dodecrypt){
 	
 		HttpResponse  response;
 		JSONObject result= new JSONObject();
@@ -143,12 +148,17 @@ public class BaseClient {
 			post.setEntity(postingString);
 			post.setHeader("Content-type", "application/json");
 			response = this.httpClient.execute(post);
+			
 			if (response != null) {
 				result= (JSONObject) parser.parse(
 						this.readInputStream(
 								response.getEntity().getContent()
 								)
 						); //Get the data in the entity
+				if(dodecrypt){
+					result= (JSONObject) parser.parse(
+							this.crypto.decrypt((String) result.get("data")));
+				}
             }
 		} catch (Exception e) {
 		    // handle exception here
