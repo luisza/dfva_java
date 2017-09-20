@@ -29,12 +29,11 @@ public class InstitutionClient extends BaseClient {
 		return result;
 	}
 	
-	private JSONObject _authenticate_show(String identification, String code) throws NoSuchAlgorithmException{
+	private JSONObject _authenticate_show(String code) throws NoSuchAlgorithmException{
 		JSONObject obj = new JSONObject();
 		JSONObject send_obj;
 		obj.put("institution", this.settings.institution);
 		obj.put("notification_url", this.settings.notificationURL);
-		obj.put("identification", identification);
 		obj.put("request_datetime", this.getTime());
 		
 		send_obj = this.getDefaltParams(obj);	
@@ -44,12 +43,11 @@ public class InstitutionClient extends BaseClient {
 		return result;
 	}
 	
-	private JSONObject _sign_show(String identification, String code) throws NoSuchAlgorithmException{
+	private JSONObject _sign_show(String code) throws NoSuchAlgorithmException{
 		JSONObject obj = new JSONObject();
 		JSONObject send_obj;
 		obj.put("institution", this.settings.institution);
 		obj.put("notification_url", this.settings.notificationURL);
-		obj.put("identification", identification);
 		obj.put("request_datetime", this.getTime());
 		
 		send_obj = this.getDefaltParams(obj);	
@@ -72,11 +70,10 @@ public class InstitutionClient extends BaseClient {
 	}
 	
 	
-	public JSONObject authenticate_show(String identification, 
-			String code){
+	public JSONObject authenticate_show(String id_transaction){
 		JSONObject obj = new JSONObject();
 		try {
-			obj=this._authenticate_show(identification, code);
+			obj=this._authenticate_show(id_transaction);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,11 +81,10 @@ public class InstitutionClient extends BaseClient {
 		return obj;
 	}
 	
-	public JSONObject sign_show(String identification, 
-			String code){
+	public JSONObject sign_show(String id_transaction){
 		JSONObject obj = new JSONObject();
 		try {
-			obj=this._sign_show(identification, code);
+			obj=this._sign_show(id_transaction);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -95,8 +95,8 @@ public class App
     	System.out.println(authres.toJSONString());
     	
     	/** Authentication show */
-    	code = (String) authres.get("code");
-    	JSONObject authresshow = client.authenticate_show("04-0212-0119", code);
+    	code = (String) authres.get("id_transaction");
+    	JSONObject authresshow = client.authenticate_show(code);
     	System.out.println(authresshow.toJSONString());
     	
 		/** Suscriptor connected */
