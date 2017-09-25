@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -47,7 +49,8 @@ public class BaseClient {
 	protected Settings settings;
 	private HttpClient   httpClient;
 	protected Crypto crypto;
-	
+	protected static final Logger logger =
+	        Logger.getLogger("dfva_java");
 	public BaseClient(Settings settings) {
 		this.settings = settings;
 		this.crypto = new Crypto(settings);
@@ -57,9 +60,9 @@ public class BaseClient {
 	
 	private String shaString(){
 		String dev="";
-		if (this.settings.algorithm == "sha512"){
+		if (this.settings.algorithm.toLowerCase().equals("sha512") ){
 			dev = "SHA-512";
-		}else if(this.settings.algorithm == "sha384"){
+		}else if(this.settings.algorithm.toLowerCase().equals("sha384")){
 			dev = "SHA-512";
 		}else{
 			dev = "SHA-256";
@@ -94,7 +97,7 @@ public class BaseClient {
 	}
 	
 	public String getTime(){
-		TimeZone tz = TimeZone.getTimeZone("UTC");
+		TimeZone tz = TimeZone.getTimeZone("America/Costa_Rica");
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
 		df.setTimeZone(tz);
 		String nowAsISO = df.format(new Date());
@@ -140,7 +143,7 @@ public class BaseClient {
 	protected JSONObject post(String url, String data, Boolean dodecrypt){
 	
 		HttpResponse  response;
-		JSONObject result= new JSONObject();
+		JSONObject result= null;
 		JSONParser parser = new JSONParser();
 		try {
 			HttpPost post = new HttpPost(url);
@@ -148,7 +151,6 @@ public class BaseClient {
 			post.setEntity(postingString);
 			post.setHeader("Content-type", "application/json");
 			response = this.httpClient.execute(post);
-			
 			if (response != null) {
 				result= (JSONObject) parser.parse(
 						this.readInputStream(
@@ -161,8 +163,7 @@ public class BaseClient {
 				}
             }
 		} catch (Exception e) {
-		    // handle exception here
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Error contactando a DFVA", e);
 		}
 		
 		return result;

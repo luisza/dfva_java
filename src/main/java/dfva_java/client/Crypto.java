@@ -18,6 +18,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -35,7 +37,8 @@ import org.bouncycastle.openssl.PEMReader;
 
 public class Crypto {
 	protected Settings settings;
-	
+	protected static final Logger logger =
+	        Logger.getLogger("dfva_java");
 	
 	public Crypto(Settings settings) {
 		this.settings = settings;
@@ -124,8 +127,9 @@ public class Crypto {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 
 		try {
+			
 			// create a session seed
-			SecureRandom.getInstanceStrong().nextBytes(session);
+			SecureRandom.getInstance("SHA1PRNG").nextBytes(session);
 			// encrypt session and save in output
 			this.encryptOAEP( session, output);
 			// encrypt data with session and save in output
@@ -135,7 +139,7 @@ public class Crypto {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Problemas de encrypción", e);
 		}
 		return dev;
 	}
@@ -145,7 +149,7 @@ public class Crypto {
 			return this._decrypt(data);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Problemas al desencriptar", e);
 		}
 
 		return "";	
@@ -168,10 +172,6 @@ public class Crypto {
 		System.arraycopy(mac, 0, edata, edata.length-16, 16);
 		
 		return new String(decryptAES_EAX(key, nonce,edata));
-		//System.out.println(size);
-		// get session
-		//
-		//return new byte[0];	
 	}
 
 	

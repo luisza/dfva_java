@@ -1,5 +1,7 @@
 package dfva_java.client;
 
+import java.nio.file.FileSystems;
+
 public class Settings{
 	public String  publicCertificate=null;
 	public String  publicKey=null;

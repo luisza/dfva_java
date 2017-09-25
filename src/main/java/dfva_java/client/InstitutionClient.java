@@ -3,16 +3,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.conn.HttpHostConnectException;
 import org.json.simple.JSONObject;
 
 public class InstitutionClient extends BaseClient {
 
-	
 	public InstitutionClient(Settings settings) {
 		super(settings);
-		// TODO Auto-generated constructor stub
 	}
 	
 	private JSONObject _authenticate(String identification) throws NoSuchAlgorithmException{
@@ -23,7 +24,7 @@ public class InstitutionClient extends BaseClient {
 		obj.put("identification", identification);
 		obj.put("request_datetime", this.getTime());
 		
-		send_obj = this.getDefaltParams(obj);	
+		send_obj = this.getDefaltParams(obj);
 		JSONObject result = this.post(this.settings.baseUrl+this.settings.authenticate
 				, send_obj.toJSONString());
 		return result;
@@ -60,12 +61,31 @@ public class InstitutionClient extends BaseClient {
 	
 	public JSONObject authenticate(String identification){
 		JSONObject obj = new JSONObject();
+		boolean inerror = false;
 		try {
 			obj=this._authenticate(identification);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch (NoSuchAlgorithmException e) {
+			inerror=true;
+			logger.log(Level.SEVERE, "Error con algoritmo", e);
 		}
+		if(obj==null){
+			inerror=true;
+		}
+		
+		if(inerror){
+			obj= new JSONObject();
+			obj.put("code", "N/D");
+			obj.put("status", "2");
+			obj.put("identification", "N/D");
+			obj.put("id_transaction", "0");
+			obj.put("request_datetime", "");
+			obj.put("sign_document", "");
+			obj.put("expiration_datetime", "");
+			obj.put("received_notification", "true");
+			obj.put("duration", "0");
+			obj.put("status_text", "Problema de comunicación interna");
+		}
+		
 		return obj;
 	}
 	
