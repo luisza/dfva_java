@@ -33,7 +33,9 @@ import org.bouncycastle.crypto.engines.AESFastEngine;
 import org.bouncycastle.crypto.modes.EAXBlockCipher;
 import org.bouncycastle.crypto.params.AEADParameters;
 import org.bouncycastle.crypto.params.KeyParameter;
-import org.bouncycastle.openssl.PEMReader;
+
+import dfva_java.client.rsa.PEMReader;
+
 
 public class Crypto {
 	protected Settings settings;
@@ -44,16 +46,23 @@ public class Crypto {
 		this.settings = settings;
 	}
 
-   public PublicKey getPublicKey() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, IOException {   
+   public PublicKey getPublicKey(){   
 	   PEMReader pemReader = new PEMReader(new StringReader(this.settings.publicKey));
-	   RSAPublicKey rsaPubKey = (RSAPublicKey) pemReader.readObject();
+	   //RSAPublicKey rsaPubKey = (RSAPublicKey) pemReader.readObject();
+	   RSAPublicKey rsaPubKey = null;
+	   try {
+			rsaPubKey = (RSAPublicKey) pemReader.getPubKey();
+	   } catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+	   }
 	   pemReader.close();
        return rsaPubKey;
     }
    
 	private RSAPrivateKey getPrivateKey() throws IOException{
 		PEMReader pemReader = new PEMReader(new StringReader(this.settings.privateKey));
-		RSAPrivateKey rsaPubKey = (RSAPrivateKey) pemReader.readObject();
+		RSAPrivateKey rsaPubKey = (RSAPrivateKey) pemReader.getPrivateKey();
 		pemReader.close();
 	    return rsaPubKey;
 	}

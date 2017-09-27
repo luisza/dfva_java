@@ -7,43 +7,24 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.bouncycastle.crypto.engines.AESFastEngine;
-import org.bouncycastle.crypto.modes.EAXBlockCipher;
-import org.bouncycastle.crypto.params.AEADParameters;
-import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
 import java.security.Security;
-import java.security.interfaces.RSAPublicKey;
-//import java.security.cert.CertificateException;
-//import java.security.cert.CertificateFactory;
-//import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import org.bouncycastle.openssl.PEMReader;
 
 public class BaseClient {
 	protected Settings settings;
@@ -124,27 +105,29 @@ public class BaseClient {
 //
 //	}
 	
-	public JSONObject getDefaltParams(JSONObject data) throws NoSuchAlgorithmException{
-		JSONObject obj = new JSONObject();
-		String edata = this.crypto.encrypt(data.toJSONString());
-		obj.put("institution", this.settings.institution);
-		obj.put("data_hash", this.getHashSum(edata));
-		obj.put("algorithm", this.settings.algorithm);
-		obj.put("public_certificate", this.settings.publicCertificate);	
-		obj.put("data", edata);
-		return obj;
+	public JsonObject getDefaltParams(JsonObject data) throws NoSuchAlgorithmException{
+		JsonObjectBuilder obj = Json.createObjectBuilder()
+				.add("institution", this.settings.institution)
+				.add("algorithm", this.settings.algorithm)
+				.add("public_certificate", this.settings.publicCertificate);	
+		
+		String edata = this.crypto.encrypt(data.toString());
+		obj.add("data_hash", this.getHashSum(edata));
+		obj.add("data", edata);
+		return obj.build();
 	}
 	
-	protected JSONObject post(String url, String data){
+	protected JsonObject post(String url, String data){
 		return post(url, data, true);
 	}
 
 	
-	protected JSONObject post(String url, String data, Boolean dodecrypt){
+	protected JsonObject post(String url, String data, Boolean dodecrypt){
 	
 		HttpResponse  response;
-		JSONObject result= null;
-		JSONParser parser = new JSONParser();
+		JsonObject result= null;
+		JsonReader jsonReader;
+		
 		try {
 			HttpPost post = new HttpPost(url);
 			StringEntity postingString = new StringEntity(data);
@@ -152,14 +135,14 @@ public class BaseClient {
 			post.setHeader("Content-type", "application/json");
 			response = this.httpClient.execute(post);
 			if (response != null) {
-				result= (JSONObject) parser.parse(
-						this.readInputStream(
-								response.getEntity().getContent()
-								)
-						); //Get the data in the entity
+				
+				jsonReader = Json.createReader(
+						response.getEntity().getContent());
+				result= jsonReader.readObject();
 				if(dodecrypt){
-					result= (JSONObject) parser.parse(
-							this.crypto.decrypt((String) result.get("data")));
+					jsonReader = Json.createReader(new StringReader(
+							this.crypto.decrypt( result.getString("data") ) ));
+					result = jsonReader.readObject();
 				}
             }
 		} catch (Exception e) {

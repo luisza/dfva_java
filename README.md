@@ -4,9 +4,9 @@ Este cliente permite comunicarse con [DFVA](https://github.com/luisza/dfva) para
 
 Utiliza Maven para manejar sus dependencias, si se desea usar fuera de maven se debe usar
 
-* apache httpclient  [descargar](https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient)
-* json-simple [descargar](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple)
-* bouncycastle  [descargar](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk16)
+* apache httpclient  [descargar](https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient/4.3.6)
+* json-simple [descargar](https://mvnrepository.com/artifact/org.glassfish/javax.json/1.0.4)
+* bouncycastle  [descargar](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on/1.54)
 
 # Modo de uso 
 

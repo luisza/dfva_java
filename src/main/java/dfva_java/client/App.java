@@ -99,11 +99,11 @@ public class App
     	Settings settings = manager.get_and_create_settings();    	
     	InstitutionClient client = new InstitutionClient(settings);   	
     	
-    	/**
+    	
     	App app = new App(client);
     	
     	app.authenticate();
-    	app.suscriptorConnected();
+    	/**app.suscriptorConnected();
     	app.sign();
     	app.validate();
     	
