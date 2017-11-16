@@ -38,9 +38,13 @@ Si se desea autenticar y revisar estado de la autenticación
 JSONObject authres = client.authenticate("04-0212-0119");
 System.out.println(authres.toJSONString());
 
-String code = (String) authres.get("code");
-JSONObject authresshow = client.authenticate_show("04-0212-0119", code);
+/** Authenticate Show */
+String code = (String) authres.get("id_transaction").toString()
+JSONObject authresshow = client.authenticate_show(code);
 System.out.println(authresshow.toJSONString());
+
+/** Authenticate delete */
+Boolean status = client.authenticate_delete(code);
 ```
 Si se desea revisar si un suscriptor está conectado
 
@@ -57,17 +61,19 @@ document = new ByteArrayInputStream(
 JSONObject signres = client.sign(
     "04-0212-0119", 
     document, 
-    "xml", 
+    "xml_cofirma",  // xml_cofirma, xml_contrafirma, odf, msoffice 
     "Texto de resumen",
     "sha512");
 
 System.out.println(signres.toJSONString());
 
 /** Sign Show */
-String code = (String) signres.get("code");
-JSONObject signresshow = client.sign_show("04-0212-0119", code);
+String code = (String) signres.get("id_transaction").toString();
+JSONObject signresshow = client.sign_show(code);
 System.out.println(signresshow.toJSONString());
-			
+
+/** Sign Delete */	
+Boolean status = client.sign_delete(code);	
 ```
 
 **Nota:** La revisión de estado de la autenticación/firma no es necesaria en servicios web ya que estos son notificados por en la URL de institución proporcionado.
@@ -86,6 +92,7 @@ Si se desea validar un documento
 ```
 document = new ByteArrayInputStream(
     "DOCUMENTO DE EJEMPLO".getBytes("UTF-8"));
-JSONObject validateDocres = client.validate_document(document);
+// opciones: cofirma, contrafirma, odf, msoffice
+JSONObject validateDocres = client.validate_document(document, "cofirma");
 System.out.println(validateDocres.toJSONString());	
 ```
