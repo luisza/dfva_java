@@ -36,7 +36,6 @@ public class BaseClient {
 		this.settings = settings;
 		this.crypto = new Crypto(settings);
 		Security.addProvider(new BouncyCastleProvider());
-		this.httpClient = HttpClientBuilder.create().build();
 	}
 	
 	private String shaString(){
@@ -129,11 +128,12 @@ public class BaseClient {
 		JsonReader jsonReader;
 		
 		try {
+			httpClient = HttpClientBuilder.create().build();
 			HttpPost post = new HttpPost(url);
 			StringEntity postingString = new StringEntity(data);
 			post.setEntity(postingString);
 			post.setHeader("Content-type", "application/json");
-			response = this.httpClient.execute(post);
+			response = httpClient.execute(post);
 			if (response != null) {
 				
 				jsonReader = Json.createReader(
@@ -145,8 +145,10 @@ public class BaseClient {
 					result = jsonReader.readObject();
 				}
             }
+			
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Error contactando a DFVA", e);
+			e.printStackTrace();
 		}
 		
 		return result;
