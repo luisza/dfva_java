@@ -190,14 +190,14 @@ public class InstitutionClient extends BaseClient {
 		if(inerror){
 			obj= Json.createObjectBuilder()
 			.add("code", "N/D")
-			.add("status", "2")
+			.add("status", 2)
 			.add("identification", "N/D")
-			.add("id_transaction", "0")
+			.add("id_transaction", 0)
 			.add("request_datetime", "")
 			.add("sign_document", "")
 			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
+			.add("received_notification", true)
+			.add("duration", 0)
 			.add("status_text", "Problema de comunicación interna").build();
 		}
 		
@@ -220,14 +220,14 @@ public class InstitutionClient extends BaseClient {
 		if(inerror){
 			obj= Json.createObjectBuilder()
 			.add("code", "N/D")
-			.add("status", "2")
+			.add("status", 2)
 			.add("identification", "N/D")
-			.add("id_transaction", "0")
+			.add("id_transaction", 0)
 			.add("request_datetime", "")
 			.add("sign_document", "")
 			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
+			.add("received_notification", true)
+			.add("duration", 0)
 			.add("status_text", "Problema de comunicación interna").build();
 		}
 		return obj;
@@ -281,14 +281,14 @@ public class InstitutionClient extends BaseClient {
 		if(inerror){
 			obj= Json.createObjectBuilder()
 			.add("code", "N/D")
-			.add("status", "2")
+			.add("status", 2)
 			.add("identification", "N/D")
-			.add("id_transaction", "0")
+			.add("id_transaction", 0)
 			.add("request_datetime", "")
 			.add("sign_document", "")
 			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
+			.add("received_notification", true)
+			.add("duration", 0)
 			.add("status_text", "Problema de comunicación interna").build();
 		}
 		return obj;		
@@ -310,14 +310,14 @@ public class InstitutionClient extends BaseClient {
 		if(inerror){
 			obj= Json.createObjectBuilder()
 			.add("code", "N/D")
-			.add("status", "2")
+			.add("status", 2)
 			.add("identification", "N/D")
-			.add("id_transaction", "0")
+			.add("id_transaction", 0)
 			.add("request_datetime", "")
 			.add("sign_document", "")
 			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
+			.add("received_notification", true)
+			.add("duration", 0)
 			.add("status_text", "Problema de comunicación interna").build();
 		}
 		return obj;
@@ -352,14 +352,14 @@ public class InstitutionClient extends BaseClient {
 		if(inerror){
 			obj= Json.createObjectBuilder()
 			.add("code", "N/D")
-			.add("status", "2")
+			.add("status", 2)
 			.add("identification", "N/D")
-			.add("id_transaction", "0")
+			.add("id_transaction", 0)
 			.add("request_datetime", "")
 			.add("sign_document", "")
 			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
+			.add("received_notification", true)
+			.add("duration", 0)
 			.add("status_text", "Problema de comunicación interna").build();
 		}
 		return obj;
@@ -384,14 +384,14 @@ public class InstitutionClient extends BaseClient {
 		if(inerror){
 			obj= Json.createObjectBuilder()
 			.add("code", "N/D")
-			.add("status", "2")
+			.add("status", 2)
 			.add("identification", "N/D")
-			.add("id_transaction", "0")
+			.add("id_transaction", 0)
 			.add("request_datetime", "")
 			.add("sign_document", "")
 			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
+			.add("received_notification", true)
+			.add("duration", 0)
 			.add("status_text", "Problema de comunicación interna").build();
 		}
 		return obj;

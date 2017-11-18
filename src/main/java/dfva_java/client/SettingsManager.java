@@ -150,7 +150,7 @@ public class SettingsManager {
     	conf.notificationURL = props.getProperty("notificationURL", conf.notificationURL );	
     	conf.algorithm=props.getProperty("algorithm", conf.algorithm );		
     	conf.sign_delete=props.getProperty("sign_delete", conf.sign_delete );
-    	conf.autenticate_show = props.getProperty("autenticate_delete", conf.autenticate_delete );
+    	conf.autenticate_delete = props.getProperty("autenticate_delete", conf.autenticate_delete );
     	return conf;
     }
     
