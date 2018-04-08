@@ -30,7 +30,7 @@ public class InstitutionClient extends BaseClient {
 		return result;
 	}
 	
-	private JsonObject _authenticate_show(String code) throws NoSuchAlgorithmException{
+	private JsonObject _authenticate_check(String code) throws NoSuchAlgorithmException{
 		JsonObject obj = Json.createObjectBuilder()
 		.add("institution", this.settings.institution)
 		.add("notification_url", this.settings.notificationURL)
@@ -43,7 +43,7 @@ public class InstitutionClient extends BaseClient {
 		return result;
 	}
 	
-	private JsonObject _sign_show(String code) throws NoSuchAlgorithmException{
+	private JsonObject _sign_check(String code) throws NoSuchAlgorithmException{
 		JsonObject obj = Json.createObjectBuilder()
 				.add("institution", this.settings.institution)
 				.add("notification_url", this.settings.notificationURL)
@@ -88,11 +88,11 @@ public class InstitutionClient extends BaseClient {
 	}
 	
 	
-	public JsonObject authenticate_show(String id_transaction){
+	public JsonObject authenticate_check(String id_transaction){
 		JsonObject obj = null;
 		boolean inerror=false;
 		try {
-			obj=this._authenticate_show(id_transaction);
+			obj=this._authenticate_check(id_transaction);
 		} catch (NoSuchAlgorithmException e) {
 			inerror=true;
 			logger.log(Level.SEVERE, "Error con algoritmo", e);
@@ -117,11 +117,11 @@ public class InstitutionClient extends BaseClient {
 		return obj;
 	}
 	
-	public JsonObject sign_show(String id_transaction){
+	public JsonObject sign_check(String id_transaction){
 		JsonObject obj = null;
 		boolean inerror=false;
 		try {
-			obj=this._sign_show(id_transaction);
+			obj=this._sign_check(id_transaction);
 		} catch (NoSuchAlgorithmException e) {
 			inerror=true;
 			logger.log(Level.SEVERE, "Error con algoritmo", e);

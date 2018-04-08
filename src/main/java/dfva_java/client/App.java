@@ -2,7 +2,8 @@ package dfva_java.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import org.json.simple.JSONObject;
+
+import javax.json.JsonObject;
 
 /**
  * Hello world!
@@ -22,13 +23,13 @@ public class App
 	
 	public void authenticate(){
     	/** authentication  */
-    	JSONObject authres = client.authenticate("04-0212-0119");
-    	System.out.println(authres.toJSONString());
+    	JsonObject authres = client.authenticate("04-0212-0119");
+    	System.out.println(authres.toString());
     	
     	/** Authentication show */
-    	code = (String) authres.get("id_transaction").toString();
-    	JSONObject authresshow = client.authenticate_show(code);
-    	System.out.println(authresshow.toJSONString());
+    	code = authres.getString("id_transaction").toString();
+    	JsonObject authresshow = client.authenticate_check(code);
+    	System.out.println(authresshow.toString());
 	}
 	
 	public void suscriptorConnected(){
@@ -42,19 +43,19 @@ public class App
 		try{
 		document = new ByteArrayInputStream(
 				"DOCU DE EJEMPLO".getBytes("UTF-8"));
-		JSONObject signres = client.sign(
+		JsonObject signres = client.sign(
 				"04-0212-0119", 
 				document, 
 				"xml", 
 				"Texto de resumen",
 				"sha512");
 		
-		System.out.println(signres.toJSONString());
+		System.out.println(signres.toString());
 		
 		/** Sign Show */
-    	code = (String) signres.get("id_transaction").toString();
-    	JSONObject signresshow = client.sign_show(code);
-    	System.out.println(signresshow.toJSONString());	
+    	code = signres.getString("id_transaction").toString();
+    	JsonObject signresshow = client.sign_check(code);
+    	System.out.println(signresshow.toString());	
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,15 +68,15 @@ public class App
 			/** VALIDATE CERTIFICATE */
 			document = new ByteArrayInputStream(
 					"CERTIFICADO DE EJEMPLO".getBytes("UTF-8"));
-			JSONObject validateCertres = client.validate_certificate( document);
-			System.out.println(validateCertres.toJSONString());	
+			JsonObject validateCertres = client.validate_certificate( document);
+			System.out.println(validateCertres.toString());	
 			
 			
 			/** VALIDATE DOCUMENT */
 			document = new ByteArrayInputStream(
 					"DOCUMENTO DE EJEMPLO".getBytes("UTF-8"));
-			JSONObject validateDocres = client.validate_document(document);
-			System.out.println(validateDocres.toJSONString());	
+			JsonObject validateDocres = client.validate_document(document);
+			System.out.println(validateDocres.toString());	
 			
 			
 		} catch (Exception e) {

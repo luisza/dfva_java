@@ -39,7 +39,7 @@ JSONObject authres = client.authenticate("04-0212-0119");
 System.out.println(authres.toJSONString());
 
 String code = (String) authres.get("code");
-JSONObject authresshow = client.authenticate_show("04-0212-0119", code);
+JSONObject authresshow = client.authenticate_check("04-0212-0119", code);
 System.out.println(authresshow.toJSONString());
 ```
 Si se desea revisar si un suscriptor está conectado
@@ -65,7 +65,7 @@ System.out.println(signres.toJSONString());
 
 /** Sign Show */
 String code = (String) signres.get("code");
-JSONObject signresshow = client.sign_show("04-0212-0119", code);
+JSONObject signresshow = client.sign_check("04-0212-0119", code);
 System.out.println(signresshow.toJSONString());
 			
 ```
