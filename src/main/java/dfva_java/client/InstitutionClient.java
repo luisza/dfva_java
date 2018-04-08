@@ -42,162 +42,23 @@ public class InstitutionClient extends BaseClient {
 				send_obj.toString());
 		return result;
 	}
-	
-	private JsonObject _sign_check(String code) throws NoSuchAlgorithmException{
+
+	private JsonObject _authenticate_delete(String code) throws NoSuchAlgorithmException{
 		JsonObject obj = Json.createObjectBuilder()
-				.add("institution", this.settings.institution)
-				.add("notification_url", this.settings.notificationURL)
-				.add("request_datetime", this.getTime()).build();
+		.add("institution", this.settings.institution)
+		.add("notification_url", this.settings.notificationURL)
+		.add("request_datetime", this.getTime()).build();
 		
 		JsonObject send_obj = this.getDefaltParams(obj);	
 		JsonObject result = this.post(this.settings.baseUrl+
-				String.format(this.settings.sign_show, code),
-				send_obj.toString() );
+				String.format(this.settings.autenticate_delete, code),
+				send_obj.toString());
 		return result;
 	}
 	
-	
-	public JsonObject authenticate(String identification){
-		JsonObject obj = null;
-		boolean inerror = false;
-		try {
-			obj=this._authenticate(identification);
-		}catch (NoSuchAlgorithmException e) {
-			inerror=true;
-			logger.log(Level.SEVERE, "Error con algoritmo", e);
-		}
-		if(obj==null){
-			inerror=true;
-		}
-		
-		if(inerror){
-			obj= Json.createObjectBuilder()
-			.add("code", "N/D")
-			.add("status", "2")
-			.add("identification", "N/D")
-			.add("id_transaction", "0")
-			.add("request_datetime", "")
-			.add("sign_document", "")
-			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
-			.add("status_text", "Problema de comunicación interna").build();
-		}
-		
-		return obj;
-	}
-	
-	
-	public JsonObject authenticate_check(String id_transaction){
-		JsonObject obj = null;
-		boolean inerror=false;
-		try {
-			obj=this._authenticate_check(id_transaction);
-		} catch (NoSuchAlgorithmException e) {
-			inerror=true;
-			logger.log(Level.SEVERE, "Error con algoritmo", e);
-		}
-		if(obj==null){
-			inerror=true;
-		}
-		
-		if(inerror){
-			obj= Json.createObjectBuilder()
-			.add("code", "N/D")
-			.add("status", "2")
-			.add("identification", "N/D")
-			.add("id_transaction", "0")
-			.add("request_datetime", "")
-			.add("sign_document", "")
-			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
-			.add("status_text", "Problema de comunicación interna").build();
-		}
-		return obj;
-	}
-	
-	public JsonObject sign_check(String id_transaction){
-		JsonObject obj = null;
-		boolean inerror=false;
-		try {
-			obj=this._sign_check(id_transaction);
-		} catch (NoSuchAlgorithmException e) {
-			inerror=true;
-			logger.log(Level.SEVERE, "Error con algoritmo", e);
-		}
-		if(obj==null){
-			inerror=true;
-		}
-		
-		if(inerror){
-			obj= Json.createObjectBuilder()
-			.add("code", "N/D")
-			.add("status", "2")
-			.add("identification", "N/D")
-			.add("id_transaction", "0")
-			.add("request_datetime", "")
-			.add("sign_document", "")
-			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
-			.add("status_text", "Problema de comunicación interna").build();
-		}
-		return obj;
-	}
-	
-	
-	public byte[] documentToBytes(InputStream document) throws IOException{
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		int nRead;
-		byte[] data = new byte[16384];
-
-		while ((nRead = document.read(data, 0, data.length)) != -1) {
-		  buffer.write(data, 0, nRead);
-		}
-		return buffer.toByteArray();
-	}
-	
-	public JsonObject sign(String identification,
+	private JsonObject _sign(String identification,
 			InputStream document, 
-			String format, //xml, odf, msoffice
-			String resumen
-			){
-		JsonObject obj = null;
-		boolean inerror=false;
-		try {
-			obj= this.sign(identification, document, format, resumen, "sha512");
-		} catch (NoSuchAlgorithmException e) {
-			inerror=true;
-			logger.log(Level.SEVERE, "Error con algoritmo", e);
-		} catch (IOException e) {
-			inerror=true;
-			logger.log(Level.SEVERE, "Error de lectura", e);
-		}
-		if(obj==null){
-			inerror=true;
-		}
-		
-		if(inerror){
-			obj= Json.createObjectBuilder()
-			.add("code", "N/D")
-			.add("status", "2")
-			.add("identification", "N/D")
-			.add("id_transaction", "0")
-			.add("request_datetime", "")
-			.add("sign_document", "")
-			.add("expiration_datetime", "")
-			.add("received_notification", "true")
-			.add("duration", "0")
-			.add("status_text", "Problema de comunicación interna").build();
-		}
-		return obj;
-
-	}
-	
-	public JsonObject sign(String identification,
-			InputStream document, 
-			String format, //xml, odf, msoffice
+			String format, //xml_cofirma, xml_contrafirma, odf, msoffice
 			String resumen,
 			String algothm_hash // sha265, sha384, sha512
 			) throws IOException, NoSuchAlgorithmException{
@@ -225,8 +86,46 @@ public class InstitutionClient extends BaseClient {
 		
 	}
 	
+	private JsonObject _sign_check(String code) throws NoSuchAlgorithmException{
+		JsonObject obj = Json.createObjectBuilder()
+				.add("institution", this.settings.institution)
+				.add("notification_url", this.settings.notificationURL)
+				.add("request_datetime", this.getTime()).build();
+		
+		JsonObject send_obj = this.getDefaltParams(obj);	
+		JsonObject result = this.post(this.settings.baseUrl+
+				String.format(this.settings.sign_check, code),
+				send_obj.toString() );
+		return result;
+	}
 	
-	public JsonObject validate_certificate(InputStream document) throws IOException, NoSuchAlgorithmException{
+	private JsonObject _sign_delete(String code) throws NoSuchAlgorithmException{
+		JsonObject obj = Json.createObjectBuilder()
+				.add("institution", this.settings.institution)
+				.add("notification_url", this.settings.notificationURL)
+				.add("request_datetime", this.getTime()).build();
+		
+		JsonObject send_obj = this.getDefaltParams(obj);	
+		JsonObject result = this.post(this.settings.baseUrl+
+				String.format(this.settings.sign_delete, code),
+				send_obj.toString() );
+		return result;
+	}
+
+	private JsonObject _suscriptor_connected(String identification) throws NoSuchAlgorithmException{
+		JsonObject  obj = Json.createObjectBuilder()
+		.add("institution", this.settings.institution)
+		.add("notification_url", this.settings.notificationURL)
+		.add("identification", identification)
+		.add("request_datetime", this.getTime()).build();
+		
+		JsonObject send_obj = this.getDefaltParams(obj);	
+		JsonObject result = this.post(this.settings.baseUrl+this.settings.suscriptor_conected
+				, send_obj.toString(), false);
+		return result;
+	}
+	
+	private JsonObject _validate_certificate(InputStream document) throws IOException, NoSuchAlgorithmException{
 		
 		JsonObject obj = Json.createObjectBuilder()
 		.add("institution", this.settings.institution)
@@ -244,12 +143,15 @@ public class InstitutionClient extends BaseClient {
 		return result;
 	}
 
-	public JsonObject validate_document(InputStream document) throws IOException, NoSuchAlgorithmException{
+	private JsonObject _validate_document(InputStream document,
+			String format //xml_cofirma, xml_contrafirma, odf, msoffice
+			) throws IOException, NoSuchAlgorithmException{
 		
 		JsonObject  obj = Json.createObjectBuilder()
 		.add("institution", this.settings.institution)
 		.add("notification_url", this.settings.notificationURL)
 		.add("request_datetime", this.getTime())
+		.add("format", format)
 		.add("document", new String(
 				Base64.encodeBase64(
 						this.documentToBytes(document)
@@ -261,29 +163,250 @@ public class InstitutionClient extends BaseClient {
 		return result;
 	}
 	
-	public Boolean suscriptor_connected(String identification){
+	public byte[] documentToBytes(InputStream document) throws IOException{
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		int nRead;
+		byte[] data = new byte[16384];
+
+		while ((nRead = document.read(data, 0, data.length)) != -1) {
+		  buffer.write(data, 0, nRead);
+		}
+		return buffer.toByteArray();
+	}	
+
+	public JsonObject authenticate(String identification){
+		JsonObject obj = null;
+		boolean inerror = false;
+		try {
+			obj=this._authenticate(identification);
+		}catch (Exception e) {
+			inerror=true;
+			logger.log(Level.SEVERE, "Error con algoritmo", e);
+		}
+		if(obj==null){
+			inerror=true;
+		}
+		
+		if(inerror){
+			obj= Json.createObjectBuilder()
+			.add("code", "N/D")
+			.add("status", 2)
+			.add("identification", "N/D")
+			.add("id_transaction", 0)
+			.add("request_datetime", "")
+			.add("sign_document", "")
+			.add("expiration_datetime", "")
+			.add("received_notification", true)
+			.add("duration", 0)
+			.add("status_text", "Problema de comunicación interna").build();
+		}
+		
+		return obj;
+	}
+	
+	public JsonObject authenticate_check(String id_transaction){
+		JsonObject obj = null;
+		boolean inerror=false;
+		try {
+			obj=this._authenticate_check(id_transaction);
+		} catch (NoSuchAlgorithmException e) {
+			inerror=true;
+			logger.log(Level.SEVERE, "Error con algoritmo", e);
+		}
+		if(obj==null){
+			inerror=true;
+		}
+		
+		if(inerror){
+			obj= Json.createObjectBuilder()
+			.add("code", "N/D")
+			.add("status", 2)
+			.add("identification", "N/D")
+			.add("id_transaction", 0)
+			.add("request_datetime", "")
+			.add("sign_document", "")
+			.add("expiration_datetime", "")
+			.add("received_notification", true)
+			.add("duration", 0)
+			.add("status_text", "Problema de comunicación interna").build();
+		}
+		return obj;
+	}
+
+	public Boolean authenticate_delete(String id_transaction){
 		JsonObject obj = null;
 		try {
-			obj=this._suscriptor_connected(identification);
-			return obj.getBoolean("is_connected");
-		} catch (NoSuchAlgorithmException e) {
+			obj=this._authenticate_delete(id_transaction);
+			return obj.getBoolean("result");
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
 	}
 	
-	private JsonObject _suscriptor_connected(String identification) throws NoSuchAlgorithmException{
-		JsonObject  obj = Json.createObjectBuilder()
-		.add("institution", this.settings.institution)
-		.add("notification_url", this.settings.notificationURL)
-		.add("identification", identification)
-		.add("request_datetime", this.getTime()).build();
+	public JsonObject sign(String identification,
+					InputStream document, 
+					String format, //xml, odf, msoffice
+					String resumen
+					){
+		return this.sign(identification, document, format, resumen, "sha512");
+	}
+	
+	public JsonObject sign(String identification,
+			InputStream document, 
+			String format, //xml_cofirma, xml_contrafirma, odf, msoffice
+			String resumen,
+			String algothm_hash // sha265, sha384, sha512
+			) {
 		
-		JsonObject send_obj = this.getDefaltParams(obj);	
-		JsonObject result = this.post(this.settings.baseUrl+this.settings.suscriptor_conected
-				, send_obj.toString(), false);
-		return result;
+		JsonObject obj = null;
+		boolean inerror=false;
+		try {
+			obj= this._sign(identification, document, format, resumen, algothm_hash);
+		} catch (NoSuchAlgorithmException e) {
+			inerror=true;
+			logger.log(Level.SEVERE, "Error con algoritmo", e);
+		} catch (IOException e) {
+			inerror=true;
+			logger.log(Level.SEVERE, "Error de lectura", e);
+		} catch(Exception e){
+			inerror=true;
+			logger.log(Level.SEVERE, "Excepcion no controlada", e);
+		}
+		if(obj==null){
+			inerror=true;
+		}
+		
+		if(inerror){
+			obj= Json.createObjectBuilder()
+			.add("code", "N/D")
+			.add("status", 2)
+			.add("identification", "N/D")
+			.add("id_transaction", 0)
+			.add("request_datetime", "")
+			.add("sign_document", "")
+			.add("expiration_datetime", "")
+			.add("received_notification", true)
+			.add("duration", 0)
+			.add("status_text", "Problema de comunicación interna").build();
+		}
+		return obj;		
+	}
+	
+	public JsonObject sign_check(String id_transaction){
+		JsonObject obj = null;
+		boolean inerror=false;
+		try {
+			obj=this._sign_check(id_transaction);
+		} catch (NoSuchAlgorithmException e) {
+			inerror=true;
+			logger.log(Level.SEVERE, "Error con algoritmo", e);
+		}
+		if(obj==null){
+			inerror=true;
+		}
+		
+		if(inerror){
+			obj= Json.createObjectBuilder()
+			.add("code", "N/D")
+			.add("status", 2)
+			.add("identification", "N/D")
+			.add("id_transaction", 0)
+			.add("request_datetime", "")
+			.add("sign_document", "")
+			.add("expiration_datetime", "")
+			.add("received_notification", true)
+			.add("duration", 0)
+			.add("status_text", "Problema de comunicación interna").build();
+		}
+		return obj;
+	}
+	
+	public Boolean sign_delete(String id_transaction){
+		JsonObject obj = null;
+		try {
+			obj=this._sign_delete(id_transaction);
+			return obj.getBoolean("result");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public JsonObject validate_certificate(InputStream document){
+		JsonObject obj=null;
+		boolean inerror=false;
+		try {
+			obj = this._validate_certificate(document);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			inerror=true;
+		}
+		if(obj==null){
+			inerror=true;
+		}
+		
+		if(inerror){
+			obj= Json.createObjectBuilder()
+			.add("code", "N/D")
+			.add("status", 2)
+			.add("identification", "N/D")
+			.add("id_transaction", 0)
+			.add("request_datetime", "")
+			.add("sign_document", "")
+			.add("expiration_datetime", "")
+			.add("received_notification", true)
+			.add("duration", 0)
+			.add("status_text", "Problema de comunicación interna").build();
+		}
+		return obj;
+	}
+	
+	public JsonObject validate_document(InputStream document,
+			String format //xml_cofirma, xml_contrafirma, odf, msoffice
+			){
+		JsonObject obj=null;
+		boolean inerror=false;
+		try {
+			obj = this._validate_document(document, format);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			inerror=true;
+		}
+		if(obj==null){
+			inerror=true;
+		}
+		
+		if(inerror){
+			obj= Json.createObjectBuilder()
+			.add("code", "N/D")
+			.add("status", 2)
+			.add("identification", "N/D")
+			.add("id_transaction", 0)
+			.add("request_datetime", "")
+			.add("sign_document", "")
+			.add("expiration_datetime", "")
+			.add("received_notification", true)
+			.add("duration", 0)
+			.add("status_text", "Problema de comunicación interna").build();
+		}
+		return obj;
+	}
+
+	public Boolean suscriptor_connected(String identification){
+		JsonObject obj = null;
+		try {
+			obj=this._suscriptor_connected(identification);
+			return obj.getBoolean("is_connected");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 }

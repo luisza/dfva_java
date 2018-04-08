@@ -149,7 +149,8 @@ public class SettingsManager {
     	conf.institution = props.getProperty("institution", conf.institution );	
     	conf.notificationURL = props.getProperty("notificationURL", conf.notificationURL );	
     	conf.algorithm=props.getProperty("algorithm", conf.algorithm );		
-    	    			
+    	conf.sign_delete=props.getProperty("sign_delete", conf.sign_delete );
+    	conf.autenticate_delete = props.getProperty("autenticate_delete", conf.autenticate_delete );
     	return conf;
     }
     
@@ -172,7 +173,9 @@ public class SettingsManager {
     	setProperty("validate_document", conf.validate_document);
     	setProperty("suscriptor_conected", conf.suscriptor_conected);
     	setProperty("autenticate_show", conf.autenticate_show);
+    	setProperty("autenticate_delete", conf.autenticate_delete);
     	setProperty("sign_show", conf.sign_show);
+    	setProperty("sign_delete", conf.sign_delete);
     	setProperty("institution", conf.institution);
     	setProperty("notificationURL", conf.notificationURL);
     	setProperty("algorithm", conf.algorithm);
