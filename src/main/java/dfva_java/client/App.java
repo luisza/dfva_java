@@ -22,7 +22,7 @@ public class App
 //	   }
 	
 	private String code;
-	private InstitutionClient client;
+	private Client client;
 	InputStream document;
 	
 	public void authenticate(){
@@ -44,7 +44,8 @@ public class App
 	}
 	
 	public void sign(){
-		String[] formats = new String[] {"xml_contrafirma","xml_cofirma",  "odf", "msoffice"}; 
+		String[] formats = new String[] {"xml_contrafirma","xml_cofirma", 
+		"odf", "msoffice", "pdf"}; 
 		for(int x=0; x<formats.length; x++){
 			this.sign(formats[x]);
 
@@ -85,7 +86,8 @@ public class App
 			System.out.println("Certificado \t-->\t");
 			System.out.println(validateCertres.toString());	
 			
-			String[] formats = new String[] {"cofirma", "contrafirma", "odf", "msoffice"}; 
+			String[] formats = new String[] {"cofirma", "contrafirma", 
+			"odf", "msoffice", "pdf"}; 
 			for(int x=0; x<formats.length; x++){
 				this.validate_document(formats[x]);
 			}
@@ -134,7 +136,7 @@ public class App
 	}
 	
 	
-    public App(InstitutionClient client) {
+    public App(Client client) {
 		super();
 		this.client = client;
 	}
@@ -144,17 +146,17 @@ public class App
     	
 		SettingsManager manager = SettingsManager.getInstance();
     	Settings settings = manager.get_and_create_settings();    	
-    	InstitutionClient client = new InstitutionClient(settings);   	
+    	Client client = new Client(settings);   	
     	
     	
     	App app = new App(client);
     	
     	/**app.authenticate();
-    	app.suscriptorConnected();
+    	app.suscriptorConnected(); **/
     	app.sign();
-    	app.validate();  **/
+    	/**app.validate();  
     	app.delete_request();
-    	/** **/
+    	 **/
     	
 	
     	

@@ -140,9 +140,7 @@ public class BaseClient {
 						response.getEntity().getContent());
 				result= jsonReader.readObject();
 				if(dodecrypt){
-					jsonReader = Json.createReader(new StringReader(
-							this.crypto.decrypt( result.getString("data") ) ));
-					result = jsonReader.readObject();
+					result=this.decrypt(result);
 				}
             }
 			
@@ -154,4 +152,11 @@ public class BaseClient {
 		return result;
 	}
 	
+	public JsonObject decrypt(JsonObject data){
+		JsonObject result= null;
+		JsonReader jsonReader = Json.createReader(new StringReader(
+							this.crypto.decrypt( data.getString("data") ) ));
+		result = jsonReader.readObject();
+		return result;
+	}
 }
