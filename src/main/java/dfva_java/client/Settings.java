@@ -15,7 +15,7 @@ public class Settings{
 	public String suscriptor_conected = "/validate/institution_suscriptor_connected/";
 	public String autenticate_show = "/authenticate/%s/institution_show/";
 	public String autenticate_delete = "/authenticate/%s/institution_delete/";
-	public String sign_show = "/sign/%s/institution_show/";	
+	public String sign_check = "/sign/%s/institution_show/";		
 	public String sign_delete = "/sign/%s/institution_delete/";		
 	public String institution = "";
 	public String notificationURL = "";

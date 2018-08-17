@@ -145,7 +145,7 @@ public class SettingsManager {
     	conf.validate_document = props.getProperty("validate_document", conf.validate_document );
     	conf.suscriptor_conected = props.getProperty("suscriptor_conected", conf.suscriptor_conected );
     	conf.autenticate_show = props.getProperty("autenticate_show", conf.autenticate_show );
-    	conf.sign_show = props.getProperty("sign_show", conf.sign_show );	
+    	conf.sign_check = props.getProperty("sign_check", conf.sign_check );	
     	conf.institution = props.getProperty("institution", conf.institution );	
     	conf.notificationURL = props.getProperty("notificationURL", conf.notificationURL );	
     	conf.algorithm=props.getProperty("algorithm", conf.algorithm );		
@@ -174,7 +174,7 @@ public class SettingsManager {
     	setProperty("suscriptor_conected", conf.suscriptor_conected);
     	setProperty("autenticate_show", conf.autenticate_show);
     	setProperty("autenticate_delete", conf.autenticate_delete);
-    	setProperty("sign_show", conf.sign_show);
+    	setProperty("sign_check", conf.sign_check);
     	setProperty("sign_delete", conf.sign_delete);
     	setProperty("institution", conf.institution);
     	setProperty("notificationURL", conf.notificationURL);
