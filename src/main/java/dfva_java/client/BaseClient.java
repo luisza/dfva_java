@@ -152,11 +152,41 @@ public class BaseClient {
 		return result;
 	}
 	
+	private boolean check_hashsum(JsonObject data, String datadec){
+		boolean dev = false;
+		String data_hash = data.getString("data_hash");
+		String calhash;
+		try {
+			calhash=this.getHashSum(datadec);
+			dev = calhash.equals(data_hash);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		return dev;
+	}
+	
 	public JsonObject decrypt(JsonObject data){
 		JsonObject result= null;
-		JsonReader jsonReader = Json.createReader(new StringReader(
-							this.crypto.decrypt( data.getString("data") ) ));
-		result = jsonReader.readObject();
+		String datadec = this.crypto.decrypt( data.getString("data") );
+		if (check_hashsum(data, datadec)){
+		
+			JsonReader jsonReader = Json.createReader(
+					new StringReader( datadec));
+			result = jsonReader.readObject();
+		}else{
+	        result = Json.createObjectBuilder()
+	    			.add("code", "N/D")
+	    			.add("status", -2)
+	    			.add("identification", "N/D")
+	    			.add("id_transaction", 0)
+	    			.add("request_datetime", "")
+	    			.add("sign_document", "")
+	    			.add("expiration_datetime", "")
+	    			.add("received_notification", true)
+	    			.add("duration", 0)
+	    			.add("status_text", "Problema decodificando mensaje, hash no es igual").build();
+		}
 		return result;
 	}
 }
