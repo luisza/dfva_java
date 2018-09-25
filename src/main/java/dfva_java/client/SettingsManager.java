@@ -134,9 +134,9 @@ public class SettingsManager {
     	Settings conf = new Settings();
     	this.load_config();
     	   	
-    	conf.publicCertificate=filemanager.read_file(this.secretDir+"/dfva_certificate.pem");
-    	conf.publicKey=filemanager.read_file(this.secretDir+"/dfva_public_key.pem");
-    	conf.privateKey=filemanager.read_file(this.secretDir+"/dfva_private_key.pem");
+    	conf.publicCertificate=filemanager.read_file(this.secretDir+"/certificate.pem");
+    	conf.publicKey=filemanager.read_file(this.secretDir+"/public_key.pem");
+    	conf.privateKey=filemanager.read_file(this.secretDir+"/private_key.pem");
      	
     	conf.baseUrl = props.getProperty("baseUrl", conf.baseUrl );
     	conf.authenticate = props.getProperty("authenticate", conf.authenticate );
@@ -161,10 +161,10 @@ public class SettingsManager {
      				System.getProperty("user.home"), ".dfva_java/").toString();
      	}    	
     	
-    	filemanager.write_file(this.secretDir+"/dfva_certificate.pem", conf.publicCertificate);
+    	filemanager.write_file(this.secretDir+"/certificate.pem", conf.publicCertificate);
 
-    	filemanager.write_file(this.secretDir+"/dfva_public_key.pem", conf.publicKey);
-    	filemanager.write_file(this.secretDir+"/dfva_private_key.pem", conf.privateKey);
+    	filemanager.write_file(this.secretDir+"/public_key.pem", conf.publicKey);
+    	filemanager.write_file(this.secretDir+"/private_key.pem", conf.privateKey);
   	    	
     	setProperty("baseUrl", conf.baseUrl);
     	setProperty("authenticate", conf.authenticate);
