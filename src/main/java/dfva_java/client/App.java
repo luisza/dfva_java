@@ -3,7 +3,6 @@ package dfva_java.client;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.json.JsonObject;
@@ -27,7 +26,7 @@ public class App
 	
 	public void authenticate(){
     	/** authentication  */
-    	JsonObject authres = client.authenticate("04-0212-0119");
+    	JsonObject authres = client.authenticate("9-0000-0000-000");
     	System.out.println(authres.toString());
     	
     	/** Authentication show */
@@ -148,15 +147,14 @@ public class App
     	Settings settings = manager.get_and_create_settings();    	
     	Client client = new Client(settings);   	
     	
-    	
     	App app = new App(client);
     	
-    	/**app.authenticate();
-    	app.suscriptorConnected(); **/
+    	app.authenticate();
+    	app.suscriptorConnected(); 
     	app.sign();
-    	/**app.validate();  
+    	app.validate();  
     	app.delete_request();
-    	 **/
+    	
     	
 	
     	

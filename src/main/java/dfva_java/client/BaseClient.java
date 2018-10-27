@@ -30,12 +30,14 @@ public class BaseClient {
 	protected Settings settings;
 	private HttpClient   httpClient;
 	protected Crypto crypto;
+	public boolean inspect;
 	protected static final Logger logger =
 	        Logger.getLogger("dfva_java");
 	public BaseClient(Settings settings) {
 		this.settings = settings;
 		this.crypto = new Crypto(settings);
 		Security.addProvider(new BouncyCastleProvider());
+		this.inspect = false;
 	}
 	
 	private String shaString(){
@@ -135,12 +137,18 @@ public class BaseClient {
 			post.setHeader("Content-type", "application/json");
 			response = httpClient.execute(post);
 			if (response != null) {
-				
+				if(this.inspect){
+					logger.log(Level.FINER, "Response: ", response.getEntity().getContent());
+				}
 				jsonReader = Json.createReader(
 						response.getEntity().getContent());
 				result= jsonReader.readObject();
+
 				if(dodecrypt){
 					result=this.decrypt(result);
+					if(this.inspect){
+						logger.log(Level.FINER, "decrypted: ", result.toString());
+					}
 				}
             }
 			

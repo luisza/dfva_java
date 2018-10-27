@@ -96,3 +96,28 @@ document = new ByteArrayInputStream(
 JSONObject validateDocres = client.validate_document(document, "cofirma");
 System.out.println(validateDocres.toJSONString());	
 ```
+
+## Compilando y Corriendo pruebas
+
+Para generar el paquete con sus dependencias puede ejecutar
+
+```
+mvn package  dependency:copy-dependencies
+```
+
+Para correr las pruebas ejecute.
+
+```
+mvn test -DskipTests=false
+```
+
+Ejecute el simulador de FVA BCCR y su cliente de celery
+
+EN FVA BCCR ejecute
+
+```
+python manage.py runserver 8001
+celery  -A fva_bccr worker  -l info
+```
+
+Puede ejecutar además celery beat para mayor exactitud, ('''celery -A fva_bccr worker -BE -l info'''), aunque puede causar inestabilidad en las pruebas. También es importante acceder a http://localhost:8001/admin/constance/config/ y habilitar USE_UNITEST para que no espere el TASK_WAIT_TO_RESPONSE definido o poner un TASK_WAIT_TO_RESPONSE bajo como 1 segundo.
