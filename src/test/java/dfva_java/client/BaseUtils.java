@@ -42,6 +42,17 @@ public class BaseUtils {
 	public Dictionary<String, List<String>> VALIDATE_CERTIFICATE_RESPONSE_TABLE= 
 			new Hashtable<String, List<String>> ();	
 	
+	
+	
+	public Dictionary<String, String> DOCUMENT_VALIDATE_NAME_TABLE= 
+			new Hashtable<String, String> ();
+
+	public Dictionary<String, Boolean> DOCUMENT_VALIDATE_SUCCESS_TABLE= 
+			new Hashtable<String, Boolean> ();
+
+	public Dictionary<String, List<Integer>> DOCUMENT_VALIDATE_CODES_TABLE= 
+			new Hashtable<String, List<Integer>> ();
+	
 	public static String DEFAULT_PATH ="dfva_testdocument/files/";
 	public Client client;
 	
@@ -141,6 +152,43 @@ public class BaseUtils {
 				"08-2959-7760",
 				Arrays.asList("Rafael Yglesias Castro", "7", "false")
 				);
+		
+		
+		DOCUMENT_VALIDATE_NAME_TABLE.put(
+		"cofirma", "527789139593,José María Montealegre Fernández\n"
+				+ "145764968887,José Figueres Ferrer");
+		DOCUMENT_VALIDATE_NAME_TABLE.put(
+		 "contrafirma","09-2171-6656,Ascensión Esquivel Ibarra\n"
+				 +"08-9841-4375,Francisco Orlich Bolmarcich");
+		DOCUMENT_VALIDATE_NAME_TABLE.put( 
+		"msoffice","06-5980-2076,Federico Tinoco Granados\n"
+						 +"01-4121-6048,Vicente Herrera Zeledón");
+		DOCUMENT_VALIDATE_NAME_TABLE.put(
+		"odf","04-2191-3685,Luis Monge Álvarez\n"
+				 +"06-2119-5314,José María Alfaro Zamora");
+		DOCUMENT_VALIDATE_NAME_TABLE.put(
+		"pdf","01-2645-3949,Juan Mora Fernández\n"+
+			   "05-9062-3516,Rafael Calderón Fournier");
+		
+		DOCUMENT_VALIDATE_SUCCESS_TABLE.put("cofirma", true);
+		DOCUMENT_VALIDATE_SUCCESS_TABLE.put("contrafirma", true);
+		DOCUMENT_VALIDATE_SUCCESS_TABLE.put("msoffice", true);
+		DOCUMENT_VALIDATE_SUCCESS_TABLE.put("odf", true);
+		DOCUMENT_VALIDATE_SUCCESS_TABLE.put("pdf", true);
+		
+
+		DOCUMENT_VALIDATE_CODES_TABLE.put("cofirma", 
+				Arrays.asList(23, 45, 21, 48, 12, 16));
+		DOCUMENT_VALIDATE_CODES_TABLE.put("contrafirma",
+				Arrays.asList(13, 24, 11, 80));
+		DOCUMENT_VALIDATE_CODES_TABLE.put("msoffice", 
+				Arrays.asList(32, 47, 69, 36));
+		DOCUMENT_VALIDATE_CODES_TABLE.put("odf", 
+				Arrays.asList(67, 51, 52, 53, 55));
+		DOCUMENT_VALIDATE_CODES_TABLE.put("pdf",
+				Arrays.asList(1));
+		
+		
 		
 		
 		SettingsManager manager = SettingsManager.getInstance();
