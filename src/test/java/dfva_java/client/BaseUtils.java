@@ -38,6 +38,10 @@ public class BaseUtils {
 	public Dictionary<String, Dictionary<String, JsonObject>> DOCUMENT_TRANSACTIONS= 
 			new Hashtable<String, Dictionary<String, JsonObject>> ();	
 	
+	
+	public Dictionary<String, List<String>> VALIDATE_CERTIFICATE_RESPONSE_TABLE= 
+			new Hashtable<String, List<String>> ();	
+	
 	public static String DEFAULT_PATH ="dfva_testdocument/files/";
 	public Client client;
 	
@@ -112,6 +116,31 @@ public class BaseUtils {
 		DOCUMENT_CHECK_RESPONSE_TABLE.put("01-1100-2211", 11);
 		DOCUMENT_CHECK_RESPONSE_TABLE.put("01-3344-5566", 13);
 		DOCUMENT_CHECK_RESPONSE_TABLE.put("01-7788-9900", 14);
+		
+		VALIDATE_CERTIFICATE_RESPONSE_TABLE.put(
+				"539895508773",
+				Arrays.asList("Carlos Alvarado Quesada", "1", "true")
+				);
+		VALIDATE_CERTIFICATE_RESPONSE_TABLE.put(
+				"02-4132-3596",
+				Arrays.asList("José Rodríguez Zeledón", "4", "false")
+				);
+		VALIDATE_CERTIFICATE_RESPONSE_TABLE.put(
+				"166306239151",
+				Arrays.asList("Juan Quirós Segura", "10", "false")
+				);
+		VALIDATE_CERTIFICATE_RESPONSE_TABLE.put(
+				"03-4685-3514",
+				Arrays.asList("Mario Echandi Jiménez", "5", "false")
+				);
+		VALIDATE_CERTIFICATE_RESPONSE_TABLE.put(
+				"03-4562-5753",
+				Arrays.asList("Óscar Arias", "4", "false")
+				);
+		VALIDATE_CERTIFICATE_RESPONSE_TABLE.put(
+				"08-2959-7760",
+				Arrays.asList("Rafael Yglesias Castro", "7", "false")
+				);
 		
 		
 		SettingsManager manager = SettingsManager.getInstance();
@@ -194,6 +223,12 @@ public class BaseUtils {
     		data = this.parse_certificate(file);
     	}
     	return data;
+    }
+    
+    public InputStream read_files_inputstream(String format, String post_read_fn, String name){
+    	String initialString = this.read_files(format, post_read_fn, name);
+    	InputStream targetStream = new ByteArrayInputStream(initialString.getBytes());
+    	return targetStream;
     }
     
     public String read_files(String format, String post_read_fn){

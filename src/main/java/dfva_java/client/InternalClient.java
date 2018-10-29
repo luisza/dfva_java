@@ -132,9 +132,10 @@ public class InternalClient extends BaseClient {
 		.add("notification_url", this.settings.notificationURL)
 		.add("request_datetime", this.getTime())
 		.add("document", new String(
-				Base64.encodeBase64(
+				//Base64.encodeBase64(
 						this.documentToBytes(document)
-						))  ).build();
+				//		)
+				)  ).build();
 		
 		JsonObject send_obj = this.getDefaltParams(obj);	
 		JsonObject result = this.post(this.settings.baseUrl+this.settings.validate_certificate
