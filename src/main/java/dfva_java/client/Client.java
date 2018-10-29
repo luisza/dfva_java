@@ -85,7 +85,7 @@ public class Client extends InternalClient {
 	
 	public JsonObject sign(String identification,
 					InputStream document, 
-					String format, //xml, odf, msoffice
+					String format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
 					String resumen
 					){
 		return this.sign(identification, document, format, resumen, "sha512");
@@ -93,7 +93,7 @@ public class Client extends InternalClient {
 	
 	public JsonObject sign(String identification,
 			InputStream document, 
-			String format, //xml_cofirma, xml_contrafirma, odf, msoffice
+			String format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
 			String resumen,
 			String algothm_hash // sha265, sha384, sha512
 			) {

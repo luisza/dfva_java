@@ -1,8 +1,10 @@
 package dfva_java.client;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -32,6 +34,9 @@ public class BaseUtils {
 	
 	public Dictionary<String, JsonObject> AUTH_TRANSACTIONS= 
 			new Hashtable<String, JsonObject> ();	
+
+	public Dictionary<String, Dictionary<String, JsonObject>> DOCUMENT_TRANSACTIONS= 
+			new Hashtable<String, Dictionary<String, JsonObject>> ();	
 	
 	public static String DEFAULT_PATH ="dfva_testdocument/files/";
 	public Client client;
@@ -197,4 +202,11 @@ public class BaseUtils {
     public String read_files(String format){
     	return this.read_files(format, "base64", "test.");
     }
+    
+    public InputStream read_files_inputstream(String format){    
+    	String initialString = this.read_files(format);
+    	InputStream targetStream = new ByteArrayInputStream(initialString.getBytes());
+    	return targetStream;
+    }
 }
+

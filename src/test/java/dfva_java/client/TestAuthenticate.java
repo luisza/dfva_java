@@ -1,5 +1,6 @@
 package dfva_java.client;
 
+/**
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class TestAuthenticate {
 			}
 		}
 		try {
-			Thread.sleep(utils.WAIT_AUTH);
+			Thread.sleep(BaseUtils.WAIT_AUTH);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,3 +124,4 @@ public class TestAuthenticate {
     }
 
 }
+**/
