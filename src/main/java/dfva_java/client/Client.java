@@ -49,12 +49,14 @@ public class Client extends InternalClient {
 
 	public JsonObject authenticate(String identification){
 		JsonObject obj = null;
-		boolean inerror = false;
 		try {
 			obj=super.authenticate(identification);
 		}catch (Exception e) {
-			obj=this.get_default_sign_error();
+			obj=null;
 			logger.log(Level.SEVERE, "Error con algoritmo", e);
+		}
+		if(obj == null){
+			obj=this.get_default_sign_error();
 		}
 	
 		return obj;
@@ -62,25 +64,26 @@ public class Client extends InternalClient {
 	
 	public JsonObject authenticate_check(String id_transaction){
 		JsonObject obj = null;
-		boolean inerror=false;
 		try {
 			obj=super.authenticate_check(id_transaction);
 		} catch (Exception e) {
-			obj=this.get_default_sign_error();
+			obj=null;
 			logger.log(Level.SEVERE, "Authenticate_check: Error con algoritmo", e);
+		}
+		if(obj == null){
+			obj=this.get_default_sign_error();
 		}
 		return obj;
 	}
 
 	public Boolean authenticate_delete(String id_transaction){
-		JsonObject obj = null;
+		Boolean dev=false;
 		try {
-			return super.authenticate_delete(id_transaction);
+			dev= super.authenticate_delete(id_transaction);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			logger.log(Level.SEVERE, "Authenticate_delete: Error con algoritmo", e);
 		}
-		return false;
+		return dev;
 	}
 	
 	public JsonObject sign(String identification,
@@ -147,14 +150,13 @@ public class Client extends InternalClient {
 	}
 	
 	public Boolean sign_delete(String id_transaction){
+		Boolean dev = false;
 		try {
-			return super.sign_delete(id_transaction);
+			dev= super.sign_delete(id_transaction);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-            logger.log(Level.SEVERE, "sign_delete: Error no especificado", e);
+			logger.log(Level.SEVERE, "sign_delete: Error no especificado", e);
 		}
-		return false;
+		return dev;
 	}
 	
     public JsonObject validate(InputStream document, String type, String format){
@@ -172,8 +174,7 @@ public class Client extends InternalClient {
 		try {
 			obj = super.validate_certificate(document);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			 logger.log(Level.SEVERE, "validate_certificate: Error no especificado", e);
+			logger.log(Level.SEVERE, "validate_certificate: Error no especificado", e);
 			inerror=true;
 		}
 		if(obj==null){
@@ -209,13 +210,13 @@ public class Client extends InternalClient {
 	}
 
 	public Boolean suscriptor_connected(String identification){
+		Boolean dev=false;
 		try {
-			return super.suscriptor_connected(identification) ;
+			dev= super.suscriptor_connected(identification) ;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			logger.log(Level.SEVERE, "suscriptor_connected: Error no especificado", e);
 		}
-		return false;
+		return dev;
 	}
 
     public JsonObject get_notify_data(JsonObject data){
@@ -224,10 +225,12 @@ public class Client extends InternalClient {
 			obj=super.get_notify_data(data);
 			return obj;
 		} catch (Exception e) {
-			obj=this.get_default_sign_error();
+			obj=null;
 			logger.log(Level.SEVERE, "suscriptor_connected: Error no especificado", e);
 		}
+		if(obj==null){
+			obj=this.get_default_sign_error();
+		}
 		return obj;
-        
     }
 }

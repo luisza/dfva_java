@@ -146,15 +146,15 @@ public class App
 		SettingsManager manager = SettingsManager.getInstance();
     	Settings settings = manager.get_and_create_settings();    	
     	Client client = new Client(settings);   	
-    	
+    	//client.inspect = true;
     	App app = new App(client);
     	
     	app.authenticate();
-    	app.suscriptorConnected(); 
+    	/**app.suscriptorConnected(); 
     	app.sign();
     	app.validate();  
     	app.delete_request();
-    	
+    	**/
     	
 	
     	

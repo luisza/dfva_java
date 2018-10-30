@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -18,9 +19,13 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -136,12 +141,17 @@ public class BaseClient {
 			post.setEntity(postingString);
 			post.setHeader("Content-type", "application/json");
 			response = httpClient.execute(post);
+			InputStream content = response.getEntity().getContent();
 			if (response != null) {
 				if(this.inspect){
-					logger.log(Level.FINER, "Response: ", response.getEntity().getContent());
+					byte[] targetArray = new byte[content.available()];
+					content.read(targetArray);
+					logger.log(Level.FINER, "Response: ", 
+							new String(targetArray));
+					content = new ByteArrayInputStream(targetArray);
 				}
 				jsonReader = Json.createReader(
-						response.getEntity().getContent());
+						content);
 				result= jsonReader.readObject();
 
 				if(dodecrypt){
