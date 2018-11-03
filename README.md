@@ -82,13 +82,14 @@ En el caso de firma pdf debe utilizar
 ```
 JSONObject signres = client.sign("04-0212-0119", 
     document, 
-    "xml_cofirma",
+    "pdf",
     "Texto de resumen",
     "sha512",
     "Lugar de la firma",
     "Razón de la firma"	);
 ```
 
+En caso de no ingresarse el lugar y la razón de firma se pondrá uno texto por defecto.
 
 **Nota:** La revisión de estado de la autenticación/firma no es necesaria en servicios web ya que estos son notificados por en la URL de institución proporcionado.
 
