@@ -76,6 +76,20 @@ System.out.println(signresshow.toJSONString());
 Boolean status = client.sign_delete(code);	
 ```
 
+
+En el caso de firma pdf debe utilizar 
+
+```
+JSONObject signres = client.sign("04-0212-0119", 
+    document, 
+    "xml_cofirma",
+    "Texto de resumen",
+    "sha512",
+    "Lugar de la firma",
+    "Razón de la firma"	);
+```
+
+
 **Nota:** La revisión de estado de la autenticación/firma no es necesaria en servicios web ya que estos son notificados por en la URL de institución proporcionado.
 
 Si se desea validar un certificado
