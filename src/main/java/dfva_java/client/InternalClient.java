@@ -58,9 +58,11 @@ public class InternalClient extends BaseClient {
 	
 	protected JsonObject sign(String identification,
 			InputStream document, 
-			String format, //xml_cofirma, xml_contrafirma, odf, msoffice
+			String format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
 			String resumen,
-			String algothm_hash // sha265, sha384, sha512
+			String algothm_hash, // sha265, sha384, sha512
+            String place,
+            String reason
 			) throws IOException, NoSuchAlgorithmException{
 		
 		 JsonObjectBuilder obj = Json.createObjectBuilder()
@@ -79,6 +81,13 @@ public class InternalClient extends BaseClient {
 		obj.add("algorithm_hash", algothm_hash);
 		obj.add("document_hash", this.getHashSum(bdocument));
 		
+        if(format.equals("pdf")){
+            place = place != null ? place : "Firma sin lugar";
+            reason = reason != null ? reason : "Sin motivo";
+    		obj.add("place", place);
+		    obj.add("reason", reason);
+        }
+
 		JsonObject send_obj = this.getDefaltParams(obj.build());	
 		JsonObject result = this.post(this.settings.baseUrl+this.settings.sign
 				, send_obj.toString());

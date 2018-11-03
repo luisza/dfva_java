@@ -121,3 +121,10 @@ celery  -A fva_bccr worker  -l info
 ```
 
 Puede ejecutar además celery beat para mayor exactitud, ('''celery -A fva_bccr worker -BE -l info'''), aunque puede causar inestabilidad en las pruebas. También es importante acceder a http://localhost:8001/admin/constance/config/ y habilitar USE_UNITEST para que no espere el TASK_WAIT_TO_RESPONSE definido o poner un TASK_WAIT_TO_RESPONSE bajo como 1 segundo.
+
+
+También se puede correr la aplicación en consola usando 
+
+```
+java -cp "target/dfva_java-0.0.1-SNAPSHOT.jar:target/dependency/*"  dfva_java.client.App
+```

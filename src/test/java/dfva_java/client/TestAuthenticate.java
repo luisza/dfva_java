@@ -52,6 +52,9 @@ public class TestAuthenticate {
 						String.format("%d",obj.getInt("id_transaction")));
 				Integer expdata =utils.AUTHENTICATION_CHECK_RESPONSE_TABLE.get(identification);
 				assertEquals((Integer) resobj.getInt("status"), expdata);
+                Boolean ok = utils.client.authenticate_delete(
+						String.format("%d",obj.getInt("id_transaction")));
+                assertEquals(ok, true);
 			}
 		}
 	}

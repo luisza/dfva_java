@@ -80,6 +80,8 @@ public class TestDocumentSign {
 						String.format("%d",idtransaction));
 				Integer expdata =utils.DOCUMENT_CHECK_RESPONSE_TABLE.get(identification);
 				assertEquals((Integer) resobj.getInt("status"), expdata);
+                Boolean ok = utils.client.sign_delete(String.format("%d",idtransaction));
+                assertEquals(ok, true);
 			}
 		}
 	}

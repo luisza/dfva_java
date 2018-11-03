@@ -91,21 +91,32 @@ public class Client extends InternalClient {
 					String format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
 					String resumen
 					){
-		return this.sign(identification, document, format, resumen, "sha512");
+		return this.sign(identification, document, format, resumen, "sha512", null, null);
 	}
-	
+
 	public JsonObject sign(String identification,
 			InputStream document, 
 			String format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
 			String resumen,
 			String algothm_hash // sha265, sha384, sha512
+ 			) {
+        return this.sign(identification, document, format, resumen, algothm_hash, null, null);
+    }
+	
+	public JsonObject sign(String identification,
+			InputStream document, 
+			String format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
+			String resumen,
+			String algothm_hash, // sha265, sha384, sha512
+            String place,
+            String reason
 			) {
 		
 		JsonObject obj = null;
 		boolean inerror=false;
 		try {
 			obj= super.sign(identification, document, format, 
-                            resumen, algothm_hash);
+                            resumen, algothm_hash, place, reason);
 		} catch (NoSuchAlgorithmException e) {
 			inerror=true;
 			logger.log(Level.SEVERE, "sign: Error con algoritmo", e);
