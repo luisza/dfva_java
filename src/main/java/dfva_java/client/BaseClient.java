@@ -13,6 +13,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -81,6 +82,12 @@ public class BaseClient {
 		 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 		}
 		return sb.toString();
+	}
+	
+	protected String getHashSumB64(byte [] data) throws NoSuchAlgorithmException{
+		MessageDigest md = MessageDigest.getInstance(this.shaString());
+		md.update(data);
+		return new String(Base64.encodeBase64(md.digest()));
 	}
 	
 	public String getTime(){

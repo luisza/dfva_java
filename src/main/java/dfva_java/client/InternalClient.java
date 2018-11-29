@@ -79,7 +79,7 @@ public class InternalClient extends BaseClient {
 				Base64.encodeBase64(bdocument)));
 		
 		obj.add("algorithm_hash", algothm_hash);
-		obj.add("document_hash", this.getHashSum(bdocument));
+		obj.add("document_hash", this.getHashSumB64(bdocument));
 		
         if(format.equals("pdf")){
             place = place != null ? place : "Firma sin lugar";
