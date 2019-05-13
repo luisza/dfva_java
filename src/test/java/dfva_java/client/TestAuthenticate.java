@@ -60,6 +60,11 @@ public class TestAuthenticate {
 	}
 
 	@Test
+	public void test_auth_0119192020(){
+		this.do_checks("01-1919-2020");
+	}
+
+	@Test
 	public void test_auth_0111002211(){
         this.do_checks("01-1100-2211");
 

@@ -12,7 +12,7 @@ import javax.json.JsonObject;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-public class TestDocumentSign {
+public class TestDocumentReceived {
 	public static List<String> DOCUMENT_ALLOWED_TEST = Arrays.asList();
 	private BaseUtils utils = BaseUtils.getInstance();
 
@@ -44,7 +44,7 @@ public class TestDocumentSign {
 						format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
 						"Sign document with format "+format
 						);
-					TestDocumentSign.save_obj(identification, format, obj,
+					TestDocumentReceived.save_obj(identification, format, obj,
 							utils);
 				}		
 			}
