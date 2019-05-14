@@ -26,53 +26,54 @@ public class TestValidateCertificates {
 		List<String> ids = utils.VALIDATE_CERTIFICATE_RESPONSE_TABLE.get(identification);
 		return Integer.parseInt(ids.get(1));
 	}
-	
+
 	private String get_name(String identification){
 		List<String> ids = utils.VALIDATE_CERTIFICATE_RESPONSE_TABLE.get(identification);
 		return ids.get(0);
 	}
 	
 	public void make_validation(String identification){
+		String format = "crt";
 		String name ="certs/"+identification.replace("-", "")+".";
-		InputStream cert = utils.read_files_inputstream("crt", "certificate", name);
-		JsonObject response = utils.client.validate(cert, "certificate", name);
-		
-		assertEquals(response.getInt("status"), this.get_int(identification));
+
+		InputStream cert = utils.read_files_inputstream(format, "base64", name);
+		JsonObject response = utils.client.validate(cert, "certificate", format);
+
 		boolean result =  this.get_boolean(identification);
+
+		assertEquals(response.getInt("status"), this.get_int(identification));
 		if(result){
 			assertEquals(response.getString("full_name"), this.get_name(identification));
 			assertEquals(response.getBoolean("was_successfully"), result);			
 		}
 	}
-	
+
 	@Test
-	public void test_539895508773(){
-        this.make_validation("539895508773");
+	public void test_0100010002(){
+		this.make_validation("01-0001-0002");
 	}
 
 	@Test
-	public void test_0241323596(){
-        this.make_validation("02-4132-3596");
+	public void test_199887755443(){
+		this.make_validation("199887755443");
 	}
 
 	@Test
-	public void test_166306239151(){
-        this.make_validation("166306239151");
+	public void test_0100010002exp(){
+		this.make_validation("01-0001-0002exp");
 	}
 
 	@Test
-	public void test_0346853514(){
-        this.make_validation("03-4685-3514");
+	public void test_199887755443exp(){this.make_validation("199887755443exp");
 	}
 
 	@Test
-	public void test_0345625753(){
-        this.make_validation("03-4562-5753");
+	public void test_0100010002rev(){this.make_validation("01-0001-0002rev");
 	}
 
 	@Test
-	public void test_0829597760(){
-        this.make_validation("08-2959-7760");
-    }
+	public void test_199887755443rev(){this.make_validation("199887755443rev");
+	}
+
 
 }

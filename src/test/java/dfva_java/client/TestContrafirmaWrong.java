@@ -1,12 +1,10 @@
 package dfva_java.client;
 
 import static org.junit.Assert.assertEquals;
-
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.json.JsonObject;
@@ -16,7 +14,7 @@ import org.junit.Test;
 
 
 
-public class TestDocumentWrong {
+public class TestContrafirmaWrong {
 	public static List<String> DOCUMENT_ALLOWED_TEST = Arrays.asList();
 	private BaseUtils utils = BaseUtils.getInstance();
 

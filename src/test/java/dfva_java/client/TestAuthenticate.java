@@ -38,8 +38,8 @@ public class TestAuthenticate {
 	
 	private void do_checks(String identification) {
 		if (AUTH_ALLOWED_TEST.isEmpty() || AUTH_ALLOWED_TEST.indexOf(identification) != -1) {
-			List<String> noresponse = Arrays.asList("500000000000", "01-1919-2222", "01-1919-2020", "01-1919-2121",
-					"9-0000-0000-000");
+			List<String> noresponse = Arrays.asList("500000000000", "01-1919-2222", "01-1919-2020",
+					"01-1919-2121", "9-0000-0000-000");
 
 			if (noresponse.indexOf(identification) != -1) {
 				Integer expdata = (Integer) utils.AUTHENTICATION_RESPONSE_TABLE.get(identification);
@@ -50,14 +50,16 @@ public class TestAuthenticate {
 				JsonObject obj = utils.AUTH_TRANSACTIONS.get(identification);
 				JsonObject resobj = utils.client.authenticate_check(
 						String.format("%d",obj.getInt("id_transaction")));
-				Integer expdata =utils.AUTHENTICATION_CHECK_RESPONSE_TABLE.get(identification);
+
+				Integer expdata = utils.AUTHENTICATION_CHECK_RESPONSE_TABLE.get(identification);
 				assertEquals((Integer) resobj.getInt("status"), expdata);
-                Boolean ok = utils.client.authenticate_delete(
-						String.format("%d",obj.getInt("id_transaction")));
+
+                Boolean ok = utils.client.authenticate_delete( String.format("%d",obj.getInt("id_transaction")));
                 assertEquals(ok, true);
 			}
 		}
 	}
+
 
 	@Test
 	public void test_auth_0119192020(){
