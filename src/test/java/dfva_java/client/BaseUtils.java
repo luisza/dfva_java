@@ -19,8 +19,8 @@ import org.apache.commons.codec.binary.Base64;
 
 public class BaseUtils {
 	public static Integer TIMEWAIT = 6000;
-	public static Integer FORMAT_WAIT = 2000;
-	public static Integer WAIT_AUTH = 35000;
+	public static Integer FORMAT_WAIT = 500;
+	public static Integer WAIT_AUTH = 500;
 	private static BaseUtils instance = new BaseUtils();
 	public List<String> DOCUMENT_FORMATS = Arrays.asList(
 			"xml_cofirma", "xml_contrafirma",
@@ -41,7 +41,10 @@ public class BaseUtils {
 			new Hashtable<String, JsonObject> ();	
 
 	public Dictionary<String, Dictionary<String, JsonObject>> DOCUMENT_TRANSACTIONS= 
-			new Hashtable<String, Dictionary<String, JsonObject>> ();	
+			new Hashtable<String, Dictionary<String, JsonObject>> ();
+
+	public Dictionary<String, Dictionary<String, JsonObject>> DOCUMENT_TRANSACTIONS_WRONG=
+			new Hashtable<String, Dictionary<String, JsonObject>> ();
 	
 	
 	public Dictionary<String, List<String>> VALIDATE_CERTIFICATE_RESPONSE_TABLE= 

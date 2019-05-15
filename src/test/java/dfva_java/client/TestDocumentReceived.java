@@ -42,16 +42,18 @@ public class TestDocumentReceived {
 					obj = utils.client.sign(identification,
 							utils.read_files_inputstream(format),
 							format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
-							"Sign document with format " + format
+							"Sign document with format " + format,
+							utils.client.settings.algorithm,
+							format.equals("pdf")?"algún lugar de la mancha":null,
+							format.equals("pdf")?"Test":null
 					);
-					TestDocumentReceived.save_obj(identification, format, obj,
-							utils);
+					save_obj(identification, format, obj, utils);
+					try {
+						Thread.sleep(BaseUtils.FORMAT_WAIT);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-			try {
-				Thread.sleep(BaseUtils.FORMAT_WAIT);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		}
 	}
@@ -76,8 +78,9 @@ public class TestDocumentReceived {
 				assertEquals(recdata, expdata);
 			}else{
 				Integer idtransaction = this.get_response(format, identification, "id_transaction");
-				JsonObject resobj = utils.client.sign_check(
-						String.format("%d",idtransaction));
+
+				JsonObject resobj = utils.client.sign_check(String.format("%d",idtransaction));
+
 				Integer expdata =utils.DOCUMENT_CHECK_RESPONSE_TABLE.get(identification);
 				assertEquals(expdata, (Integer) resobj.getInt("status"));
                 Boolean ok = utils.client.sign_delete(String.format("%d",idtransaction));

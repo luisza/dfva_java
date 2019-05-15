@@ -21,18 +21,19 @@ public class TestAuthenticate {
 		BaseUtils utils = BaseUtils.getInstance();
 		Enumeration<String> keys = utils.AUTHENTICATION_RESPONSE_TABLE.keys();
 		String identification;
-		while(keys.hasMoreElements()){
-			identification = (String)keys.nextElement();
-			if( AUTH_ALLOWED_TEST.isEmpty() || 	AUTH_ALLOWED_TEST.indexOf(identification)!=-1){
+		while(keys.hasMoreElements()) {
+			identification = (String) keys.nextElement();
+			if (AUTH_ALLOWED_TEST.isEmpty() || AUTH_ALLOWED_TEST.indexOf(identification) != -1) {
 				obj = utils.client.authenticate(identification);
 				utils.AUTH_TRANSACTIONS.put(identification, obj);
 			}
-		}
-		try {
-			Thread.sleep(BaseUtils.WAIT_AUTH);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			try {
+				Thread.sleep(BaseUtils.WAIT_AUTH);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

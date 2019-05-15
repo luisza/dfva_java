@@ -22,16 +22,16 @@ public class TestContrafirmaWrong {
 								String format, JsonObject obj,
 								BaseUtils utils){
 
-		Dictionary<String, JsonObject>  dicobj = utils.DOCUMENT_TRANSACTIONS.get(identification);
+		Dictionary<String, JsonObject>  dicobj = utils.DOCUMENT_TRANSACTIONS_WRONG.get(identification);
 		if(dicobj == null){
 			dicobj = new Hashtable<String, JsonObject> ();
-			utils.DOCUMENT_TRANSACTIONS.put(identification, dicobj);
+			utils.DOCUMENT_TRANSACTIONS_WRONG.put(identification, dicobj);
 		}
 		dicobj.put(format, obj);
 	}
 
 	private Integer get_response(String format, String identification, String key){
-		Dictionary<String, JsonObject>  dicobj = utils.DOCUMENT_TRANSACTIONS.get(identification);
+		Dictionary<String, JsonObject>  dicobj = utils.DOCUMENT_TRANSACTIONS_WRONG.get(identification);
 
 		JsonObject obj = dicobj.get(format);
 		return obj.getInt(key);

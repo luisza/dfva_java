@@ -121,9 +121,20 @@ mvn package  dependency:copy-dependencies
 ```
 
 Para correr las pruebas ejecute.
-
+ 
 ```
 mvn test -DskipTests=false
+```
+**Nota:**  Las pruebas requieren el uso de los archivos del proyecto  [dfva_testdocument](https://github.com/luisza/dfva_testdocument). Coloque el **dfva_testdocument** en la misma ubicación del **dfva_java**.
+
+Para correr las pruebas por categoría ejecute:
+
+```
+mvn -Dtest=TestValidateCertificates  test -DskipTests=false
+mvn -Dtest=TestValidateDocuments  test -DskipTests=false
+mvn -Dtest=TestDocumentReceived  test -DskipTests=false
+mvn -Dtest=TestContrafirmaWrong  test -DskipTests=false
+mvn -Dtest=TestAuthenticate  test -DskipTests=false
 ```
 
 Ejecute el simulador de FVA BCCR y su cliente de celery
