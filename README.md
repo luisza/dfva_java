@@ -125,7 +125,7 @@ Para correr las pruebas ejecute.
 ```
 mvn test -DskipTests=false
 ```
-**Nota:**  Las pruebas requieren el uso de los archivos del proyecto  [dfva_testdocument](https://github.com/luisza/dfva_testdocument). Coloque el **dfva_testdocument** en la misma ubicación del **dfva_java**.
+**Nota:**  Las pruebas requieren del uso de los archivos del proyecto  [dfva_testdocument](https://github.com/luisza/dfva_testdocument). Coloque el **dfva_testdocument** en la misma ubicación del **dfva_java**.
 
 Para correr las pruebas por categoría ejecute:
 
