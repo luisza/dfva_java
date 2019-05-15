@@ -35,24 +35,24 @@ public class TestDocumentReceived {
 		Enumeration<String> keys = utils.DOCUMENT_RESPONSE_TABLE.keys();
 
 		String identification;
-		while(keys.hasMoreElements()){
-			identification = (String)keys.nextElement();
-			if( DOCUMENT_ALLOWED_TEST.isEmpty() || 	DOCUMENT_ALLOWED_TEST.indexOf(identification)!=-1){
-				for(String format: utils.DOCUMENT_FORMATS){
+		while(keys.hasMoreElements()) {
+			identification = (String) keys.nextElement();
+			if (DOCUMENT_ALLOWED_TEST.isEmpty() || DOCUMENT_ALLOWED_TEST.indexOf(identification) != -1) {
+				for (String format : utils.DOCUMENT_FORMATS) {
 					obj = utils.client.sign(identification,
-						utils.read_files_inputstream(format), 
-						format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
-						"Sign document with format "+format
-						);
+							utils.read_files_inputstream(format),
+							format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
+							"Sign document with format " + format
+					);
 					TestDocumentReceived.save_obj(identification, format, obj,
 							utils);
-				}		
+				}
 			}
-		}
-		try {
-			Thread.sleep(BaseUtils.WAIT_AUTH);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			try {
+				Thread.sleep(BaseUtils.FORMAT_WAIT);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -73,15 +73,15 @@ public class TestDocumentReceived {
 		
 				Integer expdata = (Integer) utils.DOCUMENT_RESPONSE_TABLE.get(identification);
 				Integer recdata = this.get_response(format, identification, "status");
-				assertEquals(expdata, recdata);
+				assertEquals(recdata, expdata);
 			}else{
 				Integer idtransaction = this.get_response(format, identification, "id_transaction");
 				JsonObject resobj = utils.client.sign_check(
 						String.format("%d",idtransaction));
 				Integer expdata =utils.DOCUMENT_CHECK_RESPONSE_TABLE.get(identification);
-				assertEquals((Integer) resobj.getInt("status"), expdata);
+				assertEquals(expdata, (Integer) resobj.getInt("status"));
                 Boolean ok = utils.client.sign_delete(String.format("%d",idtransaction));
-                assertEquals(ok, true);
+                assertEquals(true, ok);
 			}
 		}
 	}

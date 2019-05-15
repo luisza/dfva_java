@@ -68,9 +68,9 @@ public class TestValidateDocuments {
 		List<Integer> expected_errors = this.get_experated_errors(format);
 		List<String> expected_signers = this.get_list_names(utils.DOCUMENT_VALIDATE_NAME_TABLE.get(format));
 
-		//assertEquals(expected_errors, extracted_errors);
-		assertEquals(expected_signers, extracted_signers);
-		assertEquals(utils.DOCUMENT_VALIDATE_SUCCESS_TABLE.get(format), result.getBoolean("was_successfully"));
+		assertEquals(extracted_errors, expected_errors);
+		assertEquals(extracted_signers, expected_signers);
+		assertEquals(result.getBoolean("was_successfully"), utils.DOCUMENT_VALIDATE_SUCCESS_TABLE.get(format));
 		
 	}
 	

@@ -44,7 +44,7 @@ public class TestAuthenticate {
 			if (noresponse.indexOf(identification) != -1) {
 				Integer expdata = (Integer) utils.AUTHENTICATION_RESPONSE_TABLE.get(identification);
 				Integer recdata = ((JsonObject) utils.AUTH_TRANSACTIONS.get(identification)).getInt("status");
-				assertEquals(expdata, recdata);
+				assertEquals(recdata, expdata);
 			}else{
 						
 				JsonObject obj = utils.AUTH_TRANSACTIONS.get(identification);
@@ -52,10 +52,10 @@ public class TestAuthenticate {
 						String.format("%d",obj.getInt("id_transaction")));
 
 				Integer expdata = utils.AUTHENTICATION_CHECK_RESPONSE_TABLE.get(identification);
-				assertEquals((Integer) resobj.getInt("status"), expdata);
+				assertEquals(expdata, (Integer) resobj.getInt("status"));
 
                 Boolean ok = utils.client.authenticate_delete( String.format("%d",obj.getInt("id_transaction")));
-                assertEquals(ok, true);
+                assertEquals(true, ok);
 			}
 		}
 	}

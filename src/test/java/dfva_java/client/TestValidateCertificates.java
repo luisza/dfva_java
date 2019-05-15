@@ -1,10 +1,8 @@
 package dfva_java.client;
 
 import static org.junit.Assert.assertEquals;
-
 import java.io.InputStream;
 import java.util.List;
-
 import javax.json.JsonObject;
 
 import org.junit.Test;
@@ -31,16 +29,16 @@ public class TestValidateCertificates {
 		List<String> ids = utils.VALIDATE_CERTIFICATE_RESPONSE_TABLE.get(identification);
 		return ids.get(0);
 	}
+
 	
 	public void make_validation(String identification){
 		String format = "crt";
 		String name ="certs/"+identification.replace("-", "")+".";
 
-		InputStream cert = utils.read_files_inputstream(format, "base64", name);
+		InputStream cert = utils.read_files_inputstream(format, "certificate", name);
 		JsonObject response = utils.client.validate(cert, "certificate", format);
 
 		boolean result =  this.get_boolean(identification);
-
 		assertEquals(response.getInt("status"), this.get_int(identification));
 		if(result){
 			assertEquals(response.getString("full_name"), this.get_name(identification));

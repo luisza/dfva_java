@@ -44,23 +44,23 @@ public class TestContrafirmaWrong {
 		Enumeration<String> keys = utils.DOCUMENT_RESPONSE_WRONG_TABLE.keys();
 
 		String identification;
-		while(keys.hasMoreElements()){
-			identification = (String)keys.nextElement();
-			if( DOCUMENT_ALLOWED_TEST.isEmpty() || 	DOCUMENT_ALLOWED_TEST.indexOf(identification)!=-1){
-				for(String format: utils.DOCUMENT_FORMATS) {
+		while(keys.hasMoreElements()) {
+			identification = (String) keys.nextElement();
+			if (DOCUMENT_ALLOWED_TEST.isEmpty() || DOCUMENT_ALLOWED_TEST.indexOf(identification) != -1) {
+				for (String format : utils.DOCUMENT_FORMATS) {
 					obj = utils.client.sign(identification,
-							utils.read_files_inputstream("xml", "", "no_contrafirmado."),
+							utils.read_files_inputstream("xml", format, "no_contrafirmado."),
 							format, //xml_cofirma, xml_contrafirma, odf, msoffice, pdf
 							"Sign document with format " + format
 					);
 					save_obj(identification, format, obj, utils);
 				}
 			}
-		}
-		try {
-			Thread.sleep(BaseUtils.WAIT_AUTH);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			try {
+				Thread.sleep(BaseUtils.TIMEWAIT);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -69,10 +69,10 @@ public class TestContrafirmaWrong {
 		JsonObject resobj = utils.client.sign_check(String.format("%d",idtransaction));
 
 		Integer expdata =utils.DOCUMENT_RESPONSE_WRONG_TABLE.get(identification);
-		assertEquals((Integer) resobj.getInt("status"), expdata);
+		assertEquals(expdata, (Integer) resobj.getInt("status"));
 
 		Boolean ok = utils.client.sign_delete(String.format("%d",idtransaction));
-		assertEquals(ok, true);
+		assertEquals(true, ok);
 	}
 
 	@Test

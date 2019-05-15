@@ -18,6 +18,8 @@ import org.apache.commons.codec.binary.Base64;
 
 
 public class BaseUtils {
+	public static Integer TIMEWAIT = 6000;
+	public static Integer FORMAT_WAIT = 2000;
 	public static Integer WAIT_AUTH = 35000;
 	private static BaseUtils instance = new BaseUtils();
 	public List<String> DOCUMENT_FORMATS = Arrays.asList(
@@ -193,10 +195,20 @@ public class BaseUtils {
     
     public String parse_certificate(byte[] data){
     	String certificate = new String(data);
-        return certificate.replaceAll(
-        		"-----BEGIN CERTIFICATE-----\n", "").replaceAll(
-                "\n-----END CERTIFICATE-----", ""
-        	    ).replaceAll("\n", "");
+    	String open_crt = "-----BEGIN CERTIFICATE-----";
+    	String close_crt = "-----END CERTIFICATE-----";
+		String result;
+		result = certificate;
+    	if (certificate.contains(open_crt) ||  certificate.contains(close_crt)){
+			result = certificate.replaceAll("\n", "");
+			result = result.replaceFirst(
+					"^.*"+open_crt, "").replaceFirst(
+					close_crt, ""
+			).replaceAll("\n", "");
+		}else {
+			result = new String(Base64.encodeBase64(data));
+		}
+        return result;
     }   
     
     private byte[] readBytesFromFile(String filePath) {
@@ -244,19 +256,20 @@ public class BaseUtils {
     	return dev;
     }
     
-    public String read_files(String format, String post_read_fn, String name){
-    	String data = "";
-    	String filePath = this.read_file_from_name(
-    			this.build_on_format(format, name));
-    	byte[] file = this.readBytesFromFile(filePath);
-    	if(post_read_fn.equals("base64")){
-    		data = this.parse_base64(file);
-    	}else{
-    		data = this.parse_certificate(file);
-    	}
-    	return data;
-    }
-    
+    public String read_files(String format, String post_read_fn, String name) {
+		String data = "";
+		String filePath = this.read_file_from_name(
+				this.build_on_format(format, name));
+		byte[] file = this.readBytesFromFile(filePath);
+		if (post_read_fn.equals("base64")) {
+			data = this.parse_base64(file);
+		}else if (post_read_fn.equals("certificate")) {
+			data = this.parse_certificate(file);
+		}else {
+			data = new String(file);
+		}
+		return data;
+	}
     public InputStream read_files_inputstream(String format, String post_read_fn, String name){
     	String initialString = this.read_files(format, post_read_fn, name);
     	InputStream targetStream = new ByteArrayInputStream(initialString.getBytes());
